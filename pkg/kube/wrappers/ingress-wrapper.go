@@ -111,7 +111,15 @@ func (iw *IngressWrapper) GetURL() string {
 	annotations := iw.Ingress.GetAnnotations()
 
 	if value, ok := annotations[IngressOverridePathAnnotation]; ok {
-		u.Path = value
+		var parsed, err = url.Parse(value)
+
+		if err != nil {
+			log.Printf("OverridePathAnnotation URL parsing error in getURL(): %v", err)
+			return ""
+		}
+
+		u.Path = parsed.Path
+		u.RawQuery = parsed.RawQuery
 	} else {
 		// Append port + ingressSubPath
 		u.Path = path.Join(u.Path, iw.getIngressSubPathWithPort())
