@@ -12,6 +12,7 @@ func UptimeMonitorMonitorToBaseMonitorMapper(uptimeMonitor UptimeMonitorMonitor)
 	m.Name = uptimeMonitor.FriendlyName
 	m.URL = uptimeMonitor.URL
 	m.ID = strconv.Itoa(uptimeMonitor.ID)
+	m.Interval = uptimeMonitor.Interval
 
 	return &m
 }

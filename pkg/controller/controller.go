@@ -167,7 +167,7 @@ func (c *MonitorController) createOrUpdateMonitor(monitorService monitors.Monito
 
 	if m != nil { // Monitor Already Exists
 		log.Println("Monitor already exists for ingress: " + monitorName)
-		if m.URL != monitorURL || monitorName != oldMonitorName {
+		if m.URL != monitorURL || monitorName != oldMonitorName || m.Interval == 300 {
 			m.URL = monitorURL
 			m.Name = monitorName
 			m.Annotations = annotations

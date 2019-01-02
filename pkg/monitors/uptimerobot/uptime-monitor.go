@@ -9,6 +9,7 @@ import (
 	"github.com/stakater/IngressMonitorController/pkg/config"
 	"github.com/stakater/IngressMonitorController/pkg/http"
 	"github.com/stakater/IngressMonitorController/pkg/models"
+	"os"
 )
 
 type UpTimeMonitorService struct {
@@ -77,12 +78,22 @@ func (monitor *UpTimeMonitorService) GetAll() []models.Monitor {
 
 }
 
+func getInterval() string {
+	value, exists := os.LookupEnv("IMC_MONITOR_INTERVAL")
+	if !exists || value == "" {
+		value = "360"
+	}
+
+	return value
+}
+
 func (monitor *UpTimeMonitorService) Add(m models.Monitor) {
 	action := "newMonitor"
 
 	client := http.CreateHttpClient(monitor.url + action)
 
-	body := "api_key=" + monitor.apiKey + "&format=json&type=1&url=" + url.QueryEscape(m.URL) + "&friendly_name=" + url.QueryEscape(m.Name) + "&alert_contacts=" + monitor.alertContacts
+	interval := getInterval()
+	body := "api_key=" + monitor.apiKey + "&format=json&type=1&url=" + url.QueryEscape(m.URL) + "&friendly_name=" + url.QueryEscape(m.Name) + "&alert_contacts=" + monitor.alertContacts + "&interval=" + interval
 
 	response := client.PostUrlEncodedFormBody(body)
 
@@ -106,7 +117,8 @@ func (monitor *UpTimeMonitorService) Update(m models.Monitor) {
 
 	client := http.CreateHttpClient(monitor.url + action)
 
-	body := "api_key=" + monitor.apiKey + "&format=json&id=" + m.ID + "&friendly_name=" + m.Name + "&url=" + m.URL
+	interval := getInterval()
+	body := "api_key=" + monitor.apiKey + "&format=json&id=" + m.ID + "&friendly_name=" + m.Name + "&url=" + m.URL + "&interval=" + interval
 
 	response := client.PostUrlEncodedFormBody(body)
 

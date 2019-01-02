@@ -5,4 +5,5 @@ type Monitor struct {
 	Name        string
 	ID          string
 	Annotations map[string]string
+	Interval    int
 }
