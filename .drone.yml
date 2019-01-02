@@ -1,17 +1,17 @@
 workspace:
   base: /go
-  path: src/github.com/sharecare/nexus-heartbeat
+  path: src/github.com/stakater/IngressMonitorController
 
 pipeline:
   install:
     image: nexus.admin.sharecare.com/golang-glide-make
     commands:
-      - glide up -v
+      - glide install -v
       - make build
 
   docker:
     image: nexus.admin.sharecare.com/drone-nexus-docker
-    version: cat ./.version
+    version: cat .version
     dockerfile: build/package/Dockerfile
     privileged: true
     volumes: [ '/secrets:/secrets' ]
