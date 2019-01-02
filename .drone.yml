@@ -1,0 +1,21 @@
+workspace:
+  base: /go
+  path: src/github.com/sharecare/nexus-heartbeat
+
+pipeline:
+  install:
+    image: nexus.admin.sharecare.com/golang-glide-make
+    commands:
+      - glide up -v
+      - make build
+
+  docker:
+    image: nexus.admin.sharecare.com/drone-nexus-docker
+    version: cat ./.version
+    dockerfile: build/package/Dockerfile
+    privileged: true
+    volumes: [ '/secrets:/secrets' ]
+    when:
+      event: [ push ]
+
+branch: [ maestro ]

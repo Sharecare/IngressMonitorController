@@ -1,6 +1,7 @@
-FROM stakater/base-alpine:3.7
-LABEL author="stakater"
+FROM nexus.admin.sharecare.com/ingressmonitorcontroller:base
 
-COPY ./ingressmonitorcontroller /
+# RUN apk add --update --no-cache ca-certificates
 
-ENTRYPOINT [ "/ingressmonitorcontroller" ]
+COPY IngressMonitorController /bin/IngressMonitorController
+
+ENTRYPOINT ["/bin/IngressMonitorController"]
