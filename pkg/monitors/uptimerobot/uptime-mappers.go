@@ -1,6 +1,7 @@
 package uptimerobot
 
 import (
+	"log"
 	"strconv"
 
 	"github.com/stakater/IngressMonitorController/pkg/models"
@@ -13,6 +14,7 @@ func UptimeMonitorMonitorToBaseMonitorMapper(uptimeMonitor UptimeMonitorMonitor)
 	m.URL = uptimeMonitor.URL
 	m.ID = strconv.Itoa(uptimeMonitor.ID)
 	m.Interval = uptimeMonitor.Interval
+	log.Println(m.Name + " interval " + strconv.Itoa(m.Interval) + ", " + strconv.FormatBool(m.Interval == 300))
 
 	return &m
 }
