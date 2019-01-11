@@ -17,6 +17,7 @@ import (
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/cache"
 	"k8s.io/client-go/util/workqueue"
+	"strconv"
 )
 
 // MonitorController which can be used for monitoring ingresses
@@ -166,7 +167,7 @@ func (c *MonitorController) createOrUpdateMonitor(monitorService monitors.Monito
 	m, _ := monitorService.GetByName(oldMonitorName)
 
 	if m != nil { // Monitor Already Exists
-		log.Println("Monitor already exists for ingress: " + monitorName)
+		log.Println("Monitor already exists for ingress: " + monitorName + "; interval: " + strconv.Itoa(m.Interval) + ", " + strconv.FormatBool(m.Interval == 300))
 		if m.URL != monitorURL || monitorName != oldMonitorName || m.Interval == 300 {
 			m.URL = monitorURL
 			m.Name = monitorName
