@@ -28,6 +28,14 @@ $ make build
 Pushing a tag to the maestro branch will create a new docker image as
 per this project's Drone pipeline, linked in the badge above.
 
+To run tests locally, you can do something like
+
+```
+$ minikube start
+$ kc create ns test
+$ CONFIG_FILE_PATH=$(pwd)/config.yaml go test ./...
+```
+
 ## Outputs
 
 A docker image that serves as the base for the
