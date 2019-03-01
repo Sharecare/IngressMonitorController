@@ -93,7 +93,8 @@ func (monitor *UpTimeMonitorService) Add(m models.Monitor) {
 	client := http.CreateHttpClient(monitor.url + action)
 
 	interval := getInterval()
-	body := "api_key=" + monitor.apiKey + "&format=json&type=1&url=" + url.QueryEscape(m.URL) + "&friendly_name=" + url.QueryEscape(m.Name) + "&alert_contacts=" + monitor.alertContacts + "&interval=" + interval
+	params := "&format=json&type=1&url=" + url.QueryEscape(m.URL) + "&friendly_name=" + url.QueryEscape(m.Name) + "&alert_contacts=" + monitor.alertContacts + "&interval=" + interval
+	body := "api_key=" + monitor.apiKey + params
 
 	response := client.PostUrlEncodedFormBody(body)
 
@@ -105,7 +106,7 @@ func (monitor *UpTimeMonitorService) Add(m models.Monitor) {
 			log.Println("Monitor Added: " + m.Name)
 		} else {
 			log.Println("Monitor couldn't be added: " + m.Name)
-			log.Println(string(body))
+			log.Println(string(params))
 		}
 	} else {
 		log.Printf("AddMonitor Request failed. Status Code: " + string(response.StatusCode))
@@ -118,7 +119,8 @@ func (monitor *UpTimeMonitorService) Update(m models.Monitor) {
 	client := http.CreateHttpClient(monitor.url + action)
 
 	interval := getInterval()
-	body := "api_key=" + monitor.apiKey + "&format=json&id=" + m.ID + "&friendly_name=" + m.Name + "&url=" + m.URL + "&interval=" + interval
+	params := "&format=json&id=" + m.ID + "&friendly_name=" + m.Name + "&url=" + m.URL + "&interval=" + interval
+	body := "api_key=" + monitor.apiKey + params
 
 	response := client.PostUrlEncodedFormBody(body)
 
@@ -130,7 +132,7 @@ func (monitor *UpTimeMonitorService) Update(m models.Monitor) {
 			log.Println("Monitor Updated: " + m.Name)
 		} else {
 			log.Println("Monitor couldn't be updated: " + m.Name)
-			log.Println(string(body))
+			log.Println(string(params))
 		}
 	} else {
 		log.Println("UpdateMonitor Request failed. Status Code: " + string(response.StatusCode))
@@ -141,8 +143,8 @@ func (monitor *UpTimeMonitorService) Remove(m models.Monitor) {
 	action := "deleteMonitor"
 
 	client := http.CreateHttpClient(monitor.url + action)
-
-	body := "api_key=" + monitor.apiKey + "&format=json&id=" + m.ID
+	params := "&format=json&id=" + m.ID
+	body := "api_key=" + monitor.apiKey + params
 
 	response := client.PostUrlEncodedFormBody(body)
 
@@ -154,7 +156,7 @@ func (monitor *UpTimeMonitorService) Remove(m models.Monitor) {
 			log.Println("Monitor Removed: " + m.Name)
 		} else {
 			log.Println("Monitor couldn't be removed: " + m.Name)
-			log.Println(string(body))
+			log.Println(string(params))
 		}
 	} else {
 		log.Println("RemoveMonitor Request failed. Status Code: " + string(response.StatusCode))
